@@ -53,8 +53,8 @@ We could build:
 - [ ] you'll be able to view a big board of yummy chocolate
 - [ ] you'll be able to search for any yummy chocolates (you wrote about)
 - [ ] you'll be able to visibly sort the big board of yummy chocolate
-- [ ] you'll be able to post a tweet for a yummy chocolate (you wrote about)
 - [ ] Only you can change your treasure trove of yummy chocolates
+- [ ] you'll be able to post a tweet for a yummy chocolate (you wrote about)
 - [ ] Anyone can view my big board of yummy chocolate
 
 ### How does this decompose into services?
