@@ -10,6 +10,11 @@ import (
 	"golang.org/x/net/context"
 )
 
+type Storer interface {
+	Get(string) (proto.ReviewDetails, error)
+	List() ([]*proto.ReviewDetails, error)
+}
+
 type ReviewService struct{}
 
 // Validation holds a field level valdiation error.  It also implements the error
@@ -88,4 +93,16 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 		Message: "All Good!",
 		Success: true,
 	}, nil
+}
+
+// AllReviews will return all of the reviews so far
+func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty) (*proto.ReviewList, error) {
+	storage, ok := context.Value("storage").(Storer)
+	if !ok {
+		return nil, errors.New("Storer not set in context or wrong type")
+	}
+	allReviews, _ := storage.List()
+	reviewList := proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
+
+	return &reviewList, nil
 }

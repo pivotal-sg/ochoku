@@ -10,6 +10,24 @@ import (
 	"golang.org/x/net/context"
 )
 
+// MockStorage for testing
+type MockStorage struct {
+	store []*proto.ReviewDetails
+}
+
+func (s *MockStorage) Get(string) (rd proto.ReviewDetails, err error) {
+	return
+}
+
+func (s *MockStorage) List() ([]*proto.ReviewDetails, error) {
+	return s.store, nil
+}
+
+func (s *MockStorage) Insert(review proto.ReviewDetails) error {
+	s.store = append(s.store, &review)
+	return nil
+}
+
 var reviewServiceObject reviews.ReviewService = reviews.ReviewService{}
 
 func TestReviewChocolate(t *testing.T) {
@@ -94,4 +112,40 @@ func TestNilRequest(t *testing.T) {
 	if !reflect.DeepEqual(expectedError, err) {
 		t.Errorf("Expected error to be '%v'; was '%v'", expectedError, err)
 	}
+}
+
+func TestGetAllReviews(t *testing.T) {
+	storage := &MockStorage{store: make([]*proto.ReviewDetails, 0, 1)}
+	review := proto.ReviewDetails{
+		Reviewer: "James",
+		Name:     "Hershy's Dark",
+		Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
+		Rating:   -5}
+
+	storage.Insert(review)
+
+	expectedResponse := &proto.ReviewList{
+		Reviews: []*proto.ReviewDetails{&review},
+		Count:   1,
+	}
+
+	response, err := reviewServiceObject.AllReviews(
+		context.WithValue(context.Background(), "storage", storage), &proto.Empty{})
+
+	if err != nil {
+		t.Errorf("Expected error to be '%v'; was '%v'", nil, err)
+	}
+
+	if !reflect.DeepEqual(expectedResponse, response) {
+		t.Errorf("Expected response to be '%v'; was '%v'", expectedResponse, response)
+	}
+}
+
+func TestAllReviewsMissingStorerError(t *testing.T) {
+	_, err := reviewServiceObject.AllReviews(
+		context.WithValue(context.Background(), "storage", nil), &proto.Empty{})
+	if err == nil {
+		t.Errorf("Expected error to be 'Storer not set in context'; was '%v'", err)
+	}
+
 }

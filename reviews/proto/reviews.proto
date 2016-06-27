@@ -2,6 +2,7 @@ syntax = "proto3";
 
 service Reviewer {
     rpc Review(ReviewRequest) returns (StatusResponse) {}
+    rpc AllReviews(Empty) returns (ReviewList) {}
 }
 
 message ReviewRequest {
@@ -15,3 +16,17 @@ message StatusResponse {
     string message = 5;
     bool success = 6;
 }
+
+message ReviewDetails {
+    string reviewer = 7;
+    string name = 8;
+    string review = 9;
+    int32 rating = 10;
+}
+
+message ReviewList {
+    repeated ReviewDetails reviews = 11;
+    int32 count = 12;
+}
+
+message Empty {}
