@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+service Reviewer {
+    rpc Review(ReviewRequest) returns (StatusResponse) {}
+}
+
+message ReviewRequest {
+    string reviewer = 1;
+    string name = 2;
+    string review = 3;
+    int32 rating = 4;
+}
+
+message StatusResponse {
+    string message = 5;
+    bool success = 6;
+}
