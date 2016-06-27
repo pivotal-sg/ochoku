@@ -35,24 +35,36 @@ func TestValidInputs(t *testing.T) {
 		Input    *proto.ReviewRequest
 		Expected *proto.StatusResponse
 	}{
-		{&proto.ReviewRequest{
-			Reviewer: "James",
-			Name:     "",
-			Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
-			Rating:   -5},
+		{
+			&proto.ReviewRequest{
+				Reviewer: "James",
+				Name:     "",
+				Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
+				Rating:   -5},
 			&proto.StatusResponse{
-				Message: "Name is Missing",
+				Message: `{"name":"missing"}`,
 				Success: false},
 		},
-		{&proto.ReviewRequest{
-			Reviewer: "",
-			Name:     "Valrona",
-			Review:   "I ate the wrapper as well, and it tasted worse than the chocolate",
-			Rating:   1},
+		{
+			&proto.ReviewRequest{
+				Reviewer: "",
+				Name:     "Valrona",
+				Review:   "I ate the wrapper as well, and it tasted worse than the chocolate",
+				Rating:   1},
 			&proto.StatusResponse{
-				Message: "Reviewer is Missing",
+				Message: `{"reviewer":"missing"}`,
 				Success: false,
 			},
+		},
+		{
+			&proto.ReviewRequest{
+				Reviewer: "",
+				Name:     "",
+				Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
+				Rating:   -5},
+			&proto.StatusResponse{
+				Message: `{"name":"missing","reviewer":"missing"}`,
+				Success: false},
 		},
 	}
 
