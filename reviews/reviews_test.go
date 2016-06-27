@@ -1,6 +1,7 @@
 package reviews_test
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
@@ -78,5 +79,19 @@ func TestValidInputs(t *testing.T) {
 		if !reflect.DeepEqual(testValue.Expected, response) {
 			t.Errorf("Expected response to equal '%v', was '%v'", testValue.Expected, response)
 		}
+	}
+}
+
+func TestNilRequest(t *testing.T) {
+	response, err := reviewServiceObject.Review(context.TODO(), nil)
+
+	expectedError := errors.New("ReviewRequest was nil, must be valid reference")
+
+	if response != nil {
+		t.Errorf("Expected response to be nil; was '%v'", response)
+	}
+
+	if !reflect.DeepEqual(expectedError, err) {
+		t.Errorf("Expected error to be '%v'; was '%v'", expectedError, err)
 	}
 }

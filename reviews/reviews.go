@@ -2,6 +2,7 @@ package reviews
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/micro/go-micro/client"
@@ -63,7 +64,13 @@ func validateReviewer(request proto.ReviewRequest) error {
 	return nil
 }
 
+// Review a product, it should have a Name and Reviewer.
+// It will return a StatusResponse as long as we know how to deal with what was passed in (Eg, known
+// invalid data), or an error if something else was wrong (like ?)
 func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRequest, opts ...client.CallOption) (*proto.StatusResponse, error) {
+	if reviewRequest == nil {
+		return nil, errors.New("ReviewRequest was nil, must be valid reference")
+	}
 	errors := make([]error, 0)
 
 	if err := validateName(*reviewRequest); err != nil {
