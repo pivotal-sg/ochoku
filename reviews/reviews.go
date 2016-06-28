@@ -15,7 +15,9 @@ type Storer interface {
 	Insert(proto.ReviewDetails) error
 }
 
-type ReviewService struct{}
+type ReviewService struct {
+	Store Storer
+}
 
 // Validation holds a field level valdiation error.  It also implements the error
 // interface.
@@ -72,13 +74,12 @@ func validateReviewer(request proto.ReviewRequest) error {
 // Review a product, it should have a Name and Reviewer.
 // It will return a StatusResponse as long as we know how to deal with what was passed in (Eg, known
 // invalid data), or an error if something else was wrong (like ?)
-func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRequest, response *proto.StatusResponse) error {
+func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRequest, response *proto.StatusResponse) error {
 	if reviewRequest == nil {
 		return errors.New("ReviewRequest was nil, must be valid reference")
 	}
 
-	storage, ok := c.Value("storage").(Storer)
-	if !ok {
+	if rs.Store == nil {
 		return errors.New("Storer not set in context or wrong type")
 	}
 
@@ -105,7 +106,7 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 		Rating:   reviewRequest.Rating,
 	}
 
-	storage.Insert(reviewDetails)
+	rs.Store.Insert(reviewDetails)
 
 	*response = proto.StatusResponse{
 		Message: "All Good!",
@@ -116,11 +117,10 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 
 // AllReviews will return all of the reviews so far
 func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty, response *proto.ReviewList) error {
-	storage, ok := context.Value("storage").(Storer)
-	if !ok {
+	if rs.Store == nil {
 		return errors.New("Storer not set in context or wrong type")
 	}
-	allReviews, _ := storage.List()
+	allReviews, _ := rs.Store.List()
 	*response = proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
 
 	return nil
