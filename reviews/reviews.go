@@ -4,19 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
+	"github.com/pivotal-sg/ochoku/reviews/storage"
 	"golang.org/x/net/context"
 )
 
-type Storer interface {
-	Get(string) (proto.ReviewDetails, error)
-	List() ([]*proto.ReviewDetails, error)
-	Insert(proto.ReviewDetails) error
-}
-
 type ReviewService struct {
-	Store Storer
+	Store storage.Storer
 }
 
 // Validation holds a field level valdiation error.  It also implements the error
@@ -106,6 +102,7 @@ func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRe
 		Rating:   reviewRequest.Rating,
 	}
 
+	log.Printf("inserting: '%v'\n", reviewDetails)
 	rs.Store.Insert(reviewDetails)
 
 	*response = proto.StatusResponse{
@@ -117,11 +114,14 @@ func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRe
 
 // AllReviews will return all of the reviews so far
 func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty, response *proto.ReviewList) error {
+	log.Println("All Reviews")
 	if rs.Store == nil {
 		return errors.New("Storer not set in context or wrong type")
 	}
 	allReviews, _ := rs.Store.List()
 	*response = proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
 
+	out, _ := json.Marshal(*response)
+	log.Println(string(out))
 	return nil
 }
