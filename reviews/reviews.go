@@ -13,6 +13,7 @@ import (
 type Storer interface {
 	Get(string) (proto.ReviewDetails, error)
 	List() ([]*proto.ReviewDetails, error)
+	Insert(proto.ReviewDetails) error
 }
 
 type ReviewService struct{}
@@ -76,6 +77,12 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 	if reviewRequest == nil {
 		return nil, errors.New("ReviewRequest was nil, must be valid reference")
 	}
+
+	storage, ok := c.Value("storage").(Storer)
+	if !ok {
+		return nil, errors.New("Storer not set in context or wrong type")
+	}
+
 	errors := make([]error, 0)
 
 	if err := validateName(*reviewRequest); err != nil {
@@ -85,9 +92,19 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 		errors = append(errors, err)
 	}
 
+	// If i have errors: fail it
 	if len(errors) != 0 {
 		return failedStatusResponse(errors)
 	}
+
+	reviewDetails := proto.ReviewDetails{
+		Name:     reviewRequest.Name,
+		Reviewer: reviewRequest.Reviewer,
+		Review:   reviewRequest.Review,
+		Rating:   reviewRequest.Rating,
+	}
+
+	storage.Insert(reviewDetails)
 
 	return &proto.StatusResponse{
 		Message: "All Good!",
