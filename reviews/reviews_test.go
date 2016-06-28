@@ -46,13 +46,15 @@ var reviewServiceObject reviews.ReviewService = reviews.ReviewService{}
 func TestReviewChocolateCallsInsert(t *testing.T) {
 	storage := MockStorage{store: make([]*proto.ReviewDetails, 0, 0)}
 
+	var response *proto.StatusResponse = &proto.StatusResponse{}
+
 	reviewRequest := proto.ReviewRequest{
 		Reviewer: "James",
 		Name:     "Hershy's Dark Cardboard",
 		Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
 		Rating:   -5,
 	}
-	response, err := reviewServiceObject.Review(context.WithValue(context.Background(), "storage", &storage), &reviewRequest)
+	err := reviewServiceObject.Review(context.WithValue(context.Background(), "storage", &storage), &reviewRequest, response)
 
 	if err != nil {
 		t.Errorf("expected the response to not have an error, it was %v", err)
@@ -70,6 +72,8 @@ func TestReviewChocolateCallsInsert(t *testing.T) {
 func TestValidInputs(t *testing.T) {
 	storage := &MockStorage{store: make([]*proto.ReviewDetails, 0, 0)}
 	storageContext := context.WithValue(context.Background(), "storage", storage)
+
+	var response *proto.StatusResponse = &proto.StatusResponse{}
 
 	var testValues = []struct {
 		Input    *proto.ReviewRequest
@@ -110,7 +114,7 @@ func TestValidInputs(t *testing.T) {
 
 	for _, testValue := range testValues {
 		storage.reset()
-		response, err := reviewServiceObject.Review(storageContext, testValue.Input)
+		err := reviewServiceObject.Review(storageContext, testValue.Input, response)
 
 		if err != nil {
 			t.Errorf("expected the response for '%v' to not have an error, it was %v", testValue.Input, err)
@@ -127,7 +131,8 @@ func TestValidInputs(t *testing.T) {
 }
 
 func TestNilRequest(t *testing.T) {
-	response, err := reviewServiceObject.Review(context.TODO(), nil)
+	var response *proto.StatusResponse
+	err := reviewServiceObject.Review(context.TODO(), nil, response)
 
 	expectedError := errors.New("ReviewRequest was nil, must be valid reference")
 
@@ -143,6 +148,7 @@ func TestNilRequest(t *testing.T) {
 func TestGetAllReviews(t *testing.T) {
 	storage := &MockStorage{store: make([]*proto.ReviewDetails, 0, 1)}
 	storageContext := context.WithValue(context.Background(), "storage", storage)
+	var response *proto.ReviewList = &proto.ReviewList{}
 
 	review := proto.ReviewDetails{
 		Reviewer: "James",
@@ -157,7 +163,7 @@ func TestGetAllReviews(t *testing.T) {
 		Count:   1,
 	}
 
-	response, err := reviewServiceObject.AllReviews(storageContext, &proto.Empty{})
+	err := reviewServiceObject.AllReviews(storageContext, &proto.Empty{}, response)
 
 	if err != nil {
 		t.Errorf("Expected error to be '%v'; was '%v'", nil, err)
@@ -169,8 +175,9 @@ func TestGetAllReviews(t *testing.T) {
 }
 
 func TestAllReviewsMissingStorerError(t *testing.T) {
-	_, err := reviewServiceObject.AllReviews(
-		context.WithValue(context.Background(), "storage", nil), &proto.Empty{})
+	var response *proto.ReviewList
+	err := reviewServiceObject.AllReviews(
+		context.WithValue(context.Background(), "storage", nil), &proto.Empty{}, response)
 	if err == nil {
 		t.Errorf("Expected error to be 'Storer not set in context'; was '%v'", err)
 	}

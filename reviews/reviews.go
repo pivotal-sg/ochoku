@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/micro/go-micro/client"
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
 	"golang.org/x/net/context"
 )
@@ -73,14 +72,14 @@ func validateReviewer(request proto.ReviewRequest) error {
 // Review a product, it should have a Name and Reviewer.
 // It will return a StatusResponse as long as we know how to deal with what was passed in (Eg, known
 // invalid data), or an error if something else was wrong (like ?)
-func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRequest, opts ...client.CallOption) (*proto.StatusResponse, error) {
+func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRequest, response *proto.StatusResponse) error {
 	if reviewRequest == nil {
-		return nil, errors.New("ReviewRequest was nil, must be valid reference")
+		return errors.New("ReviewRequest was nil, must be valid reference")
 	}
 
 	storage, ok := c.Value("storage").(Storer)
 	if !ok {
-		return nil, errors.New("Storer not set in context or wrong type")
+		return errors.New("Storer not set in context or wrong type")
 	}
 
 	errors := make([]error, 0)
@@ -94,7 +93,9 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 
 	// If i have errors: fail it
 	if len(errors) != 0 {
-		return failedStatusResponse(errors)
+		res, err := failedStatusResponse(errors)
+		*response = *res
+		return err
 	}
 
 	reviewDetails := proto.ReviewDetails{
@@ -106,20 +107,21 @@ func (*ReviewService) Review(c context.Context, reviewRequest *proto.ReviewReque
 
 	storage.Insert(reviewDetails)
 
-	return &proto.StatusResponse{
+	*response = proto.StatusResponse{
 		Message: "All Good!",
 		Success: true,
-	}, nil
+	}
+	return nil
 }
 
 // AllReviews will return all of the reviews so far
-func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty) (*proto.ReviewList, error) {
+func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty, response *proto.ReviewList) error {
 	storage, ok := context.Value("storage").(Storer)
 	if !ok {
-		return nil, errors.New("Storer not set in context or wrong type")
+		return errors.New("Storer not set in context or wrong type")
 	}
 	allReviews, _ := storage.List()
-	reviewList := proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
+	*response = proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
 
-	return &reviewList, nil
+	return nil
 }
