@@ -2,7 +2,6 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -19,10 +18,10 @@ type BoltStore struct {
 	store *bolt.DB
 }
 
-func New() (*BoltStore, error) {
+func New(storageFile string) (*BoltStore, error) {
 	boltStore := &BoltStore{}
 
-	db, err := bolt.Open("reviews.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db, err := bolt.Open(storageFile, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return nil, err
 	}
@@ -50,15 +49,11 @@ func (bs *BoltStore) Get(name string) (rd proto.ReviewDetails, err error) {
 func (bs *BoltStore) List() (rl []*proto.ReviewDetails, err error) {
 	rl = make([]*proto.ReviewDetails, 0, 0)
 	reviewList := &rl
-	if bs.store == nil {
-		fmt.Println("XXX Store is nil!")
-	}
 	err = bs.store.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("reviews"))
 		c := b.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			review := &proto.ReviewDetails{}
-			fmt.Printf("review: '%v'", string(v))
 			if err := json.Unmarshal(v, review); err != nil {
 				return err
 			}

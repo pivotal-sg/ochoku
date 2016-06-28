@@ -12,7 +12,7 @@ var ServiceName = "reviews"
 var Version = "0.1.0"
 
 // NewService returns a ReviewService with server
-func NewService() micro.Service {
+func NewService(storageFile string) micro.Service {
 	service := micro.NewService(
 		micro.Name(ServiceName),
 		micro.Version(Version),
@@ -20,7 +20,7 @@ func NewService() micro.Service {
 
 	service.Init()
 
-	storage, err := storage.New()
+	storage, err := storage.New(storageFile)
 
 	if err != nil {
 		log.Fatalf("Couldn't create bolt storage backend: \n%v\n", err)
