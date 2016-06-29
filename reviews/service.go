@@ -8,7 +8,7 @@ import (
 	"github.com/pivotal-sg/ochoku/reviews/storage"
 )
 
-var ServiceName = "reviews"
+var ServiceName = "pivotal.io.ochoku.reviews"
 var Version = "0.1.0"
 
 // NewService returns a ReviewService with server

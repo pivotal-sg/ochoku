@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+service ImageStorer {
+    rpc StoreImage(ImageData) returns (StatusResponse) {}
+    rpc ChooseCover(ImageChoice) returns (StatusResponse) {}
+    rpc RemoveImage(ImageChoice) returns (StatusResponse) {}
+    rpc ImagesFor(ItemName) returns (ImageList) {}
+}
+
+message ImageData {
+    string name = 1; // Name of what this is an image of
+    string caption = 2; // Caption is a description of the image
+    bytes image = 3; // Probably a bad idea
+}
+
+message ImageChoice {
+    string name = 4;  // Name of what the image is of
+    int32 index = 5;  // What the index of the image is in the array (of images in an ImageList)
+}
+
+message Image {
+    string uri = 6;  // URI for the image, where it can be downloaded from
+    string caption = 7;  // Caption is a description of the image; distinct from the name field.  This describes the image itself
+}
+
+message ImageList {
+    string name = 8; // Name of what the image is of (like, a type of chocolate)
+    repeated Image images = 9; // Caption / URI combi for images
+    int32 cover = 10; // Index of cover image for a list of images
+}
+
+message StatusResponse {
+    string message = 11;
+    bool success = 12;
+}
+
+message ItemName {
+    string Name = 13;
+}
