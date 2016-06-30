@@ -88,7 +88,7 @@ func TestValidInputs(t *testing.T) {
 				Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
 				Rating:   -5},
 			&proto.StatusResponse{
-				Message: `{"name":"missing"}`,
+				Message: `{"Name":"missing"}`,
 				Success: false},
 		},
 		{
@@ -98,7 +98,7 @@ func TestValidInputs(t *testing.T) {
 				Review:   "I ate the wrapper as well, and it tasted worse than the chocolate",
 				Rating:   1},
 			&proto.StatusResponse{
-				Message: `{"reviewer":"missing"}`,
+				Message: `{"Reviewer":"missing"}`,
 				Success: false,
 			},
 		},
@@ -109,7 +109,7 @@ func TestValidInputs(t *testing.T) {
 				Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
 				Rating:   -5},
 			&proto.StatusResponse{
-				Message: `{"name":"missing","reviewer":"missing"}`,
+				Message: `{"Name":"missing","Reviewer":"missing"}`,
 				Success: false},
 		},
 	}
