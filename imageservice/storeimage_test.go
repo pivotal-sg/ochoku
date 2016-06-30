@@ -88,7 +88,7 @@ func TestUploadImageReturnsFailForInValidImageFormats(t *testing.T) {
 				Image:   []byte{0, 0, 0},
 			},
 			expected: &proto.StatusResponse{
-				Message: `{"image":"Bad image format, jpeg and png only please."}`,
+				Message: `{"Image":"Bad image format, jpeg and png only please."}`,
 				Success: false,
 			},
 		},
@@ -99,7 +99,7 @@ func TestUploadImageReturnsFailForInValidImageFormats(t *testing.T) {
 				Image:   []byte{0, 0, 0},
 			},
 			expected: &proto.StatusResponse{
-				Message: `{"image":"Bad image format, jpeg and png only please."}`,
+				Message: `{"Image":"Bad image format, jpeg and png only please."}`,
 				Success: false,
 			},
 		},
@@ -136,7 +136,7 @@ func TestUploadImageReturnsFailForInValidFieldValues(t *testing.T) {
 				Image:   testImage(png.Encode),
 			},
 			expected: &proto.StatusResponse{
-				Message: `{"name":"missing"}`,
+				Message: `{"Name":"missing"}`,
 				Success: false,
 			},
 		},
@@ -147,7 +147,7 @@ func TestUploadImageReturnsFailForInValidFieldValues(t *testing.T) {
 				Image:   []byte{},
 			},
 			expected: &proto.StatusResponse{
-				Message: `{"image":"missing"}`,
+				Message: `{"Image":"missing"}`,
 				Success: false,
 			},
 		},
@@ -158,7 +158,7 @@ func TestUploadImageReturnsFailForInValidFieldValues(t *testing.T) {
 				Image:   []byte{},
 			},
 			expected: &proto.StatusResponse{
-				Message: `{"image":"missing","name":"missing"}`,
+				Message: `{"Image":"missing","Name":"missing"}`,
 				Success: false,
 			},
 		},

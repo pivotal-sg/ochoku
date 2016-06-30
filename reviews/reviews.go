@@ -3,7 +3,6 @@ package reviews
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
 	"github.com/pivotal-sg/ochoku/reviews/storage"
@@ -12,18 +11,6 @@ import (
 
 type ReviewService struct {
 	Store storage.Storer
-}
-
-// Validation holds a field level valdiation error.  It also implements the error
-// interface.
-type ValidationError struct {
-	Field   string `json:"field"`
-	Message string `json:"message"`
-}
-
-// Error stringifies the ValidationError, implements the error interface
-func (err ValidationError) Error() string {
-	return fmt.Sprintf("%s is %s", err.Field, err.Message)
 }
 
 // failedStatusResponse converts a list of errors into a correct response.
