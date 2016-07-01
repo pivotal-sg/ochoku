@@ -30,15 +30,33 @@ type Validation struct {
 
 type Validations []Validation
 
+// getConcreteValue will get the reflect.Value associated with the field
+// or return an error if it doesn't exist.  It will dereference any pointers
+// as well
+func getConcreteValue(i interface{}, fieldName string) (reflect.Value, error) {
+	v := reflect.ValueOf(i)
+	v = reflect.Indirect(v)
+	fieldValue := v.FieldByName(fieldName)
+	fieldValue = reflect.Indirect(fieldValue)
+	if !fieldValue.IsValid() {
+		return fieldValue, fmt.Errorf("No field of name '%s' or nil pointer", fieldName)
+	}
+
+	return fieldValue, nil
+}
+
 // Ensure that the field of name `fieldName` is both a string, and
 // not blank ("")
 func ValidateStringNotBlank(i interface{}, fieldName string) error {
-	vs := reflect.ValueOf(i)
+	fieldValue, err := getConcreteValue(i, fieldName)
+	if err != nil {
+		return err
+	}
 
-	if vs.FieldByName(fieldName).Type() != reflect.TypeOf("") {
+	if fieldValue.Type() != reflect.TypeOf("") {
 		return errors.New("Not a String")
 	}
-	if vs.FieldByName(fieldName).String() == "" {
+	if fieldValue.String() == "" {
 		return ValidationError{Field: fieldName, Message: "missing"}
 	}
 	return nil
@@ -47,12 +65,14 @@ func ValidateStringNotBlank(i interface{}, fieldName string) error {
 // Ensure that the field of name `fieldName` is both a []byte, and
 // not empty
 func ValidateByteSliceNotEmpty(i interface{}, fieldName string) error {
-	vb := reflect.ValueOf(i)
-
-	if vb.FieldByName(fieldName).Type() != reflect.TypeOf([]byte{}) {
+	fieldValue, err := getConcreteValue(i, fieldName)
+	if err != nil {
+		return err
+	}
+	if fieldValue.Type() != reflect.TypeOf([]byte{}) {
 		return errors.New("Not a []byte")
 	}
-	if len(vb.FieldByName(fieldName).Bytes()) == 0 {
+	if len(fieldValue.Bytes()) == 0 {
 		return ValidationError{Field: fieldName, Message: "missing"}
 	}
 	return nil
