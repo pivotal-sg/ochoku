@@ -11,13 +11,6 @@ import:
 - package: github.com/micro/go-platform
   subpackages:
   - config
-- package: github.com/pivotal-sg/ochoku
-  subpackages:
-  - imageservice/proto
-  - reviews
-  - reviews/proto
-  - reviews/storage
-  - validation
 - package: github.com/satori/go.uuid
 - package: golang.org/x/net
   subpackages:

@@ -1,6 +1,8 @@
 package imageservice_test
 
 import (
+	"fmt"
+	"image"
 	"reflect"
 	"testing"
 
@@ -15,15 +17,26 @@ type ImagesForTestData struct {
 	expected *proto.ImageList
 }
 
+type MockImageStore struct {
+	I int
+}
+
+func (is *MockImageStore) SaveImage(img image.Image) (filename string, err error) {
+	filename = fmt.Sprintf("/%d.jpg", is.I)
+	is.I++
+	return
+}
+
 func TestGetOneImage(t *testing.T) {
 	imageServiceObject := &imageservice.ImageService{
-		Store: []proto.ImageList{
+		FileStore: &MockImageStore{I: 1},
+		DataStore: []proto.ImageList{
 			{
 				Name: "Choco A",
 				Images: []*proto.Image{
 					{
 						Caption: "caption",
-						Uri:     "/choco-a.jpeg",
+						Uri:     "/1.jpeg",
 					},
 				},
 			},
@@ -39,7 +52,7 @@ func TestGetOneImage(t *testing.T) {
 				Cover: 0,
 				Images: []*proto.Image{
 					{
-						Uri:     "example.com/choco-a.jpg",
+						Uri:     "/1.jpeg",
 						Caption: "caption",
 					},
 				},

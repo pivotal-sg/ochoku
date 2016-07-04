@@ -19,7 +19,8 @@ import (
 type ImageService struct {
 	config config.Config
 
-	Store []proto.ImageList
+	DataStore []proto.ImageList
+	FileStore ImageStore
 }
 
 var imageDataValidations validation.Validations
@@ -148,7 +149,7 @@ func (is *ImageService) StoreImage(ctx context.Context, imgData *proto.ImageData
 				img,
 			},
 		}
-		is.Store = append(is.Store, *imageList)
+		is.DataStore = append(is.DataStore, *imageList)
 	} else {
 		imageList.Images = append(imageList.Images, img)
 	}
@@ -162,7 +163,7 @@ func (is *ImageService) StoreImage(ctx context.Context, imgData *proto.ImageData
 
 // getByName the value and index of an image.  returns nil, -1 if not there.
 func (is *ImageService) getByName(name string) (*proto.ImageList, int) {
-	for i, imageList := range is.Store {
+	for i, imageList := range is.DataStore {
 		if imageList.Name == name {
 			return &imageList, i
 		}
@@ -190,7 +191,7 @@ func (*ImageService) RemoveImage(ctx context.Context, imgChoice *proto.ImageChoi
 }
 
 func (is *ImageService) ImagesFor(ctx context.Context, itemName *proto.ItemName, imageList *proto.ImageList) error {
-	for _, il := range is.Store {
+	for _, il := range is.DataStore {
 		if il.Name == itemName.Name {
 			*imageList = il
 			return nil

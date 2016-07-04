@@ -8,6 +8,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
+	"io/ioutil"
 	"reflect"
 	"testing"
 
@@ -38,9 +39,14 @@ type StoreImageTestData struct {
 
 // checkStoreResponse iterates over a table test for StoreImage
 func checkStoreResponse(t *testing.T, testData []StoreImageTestData) {
+	dir, _ := ioutil.TempDir("", "imgserviceTest")
+	serviceObject := imageservice.ImageService{
+		DataStore: make([]proto.ImageList, 0, 0),
+		FileStore: imageservice.LocalFileStore{Path: dir},
+	}
 	for _, testValue := range testData {
 		var resp = &proto.StatusResponse{}
-		if err := imageServiceObject.StoreImage(context.TODO(), testValue.input, resp); err != nil {
+		if err := serviceObject.StoreImage(context.TODO(), testValue.input, resp); err != nil {
 			t.Fatalf(err.Error())
 		}
 		if !reflect.DeepEqual(testValue.expected, resp) {
@@ -124,7 +130,6 @@ func TestCaptionIsOptional(t *testing.T) {
 	}
 
 	checkStoreResponse(t, testData)
-
 }
 
 func TestUploadImageReturnsFailForInValidFieldValues(t *testing.T) {
@@ -164,4 +169,58 @@ func TestUploadImageReturnsFailForInValidFieldValues(t *testing.T) {
 		},
 	}
 	checkStoreResponse(t, testData)
+}
+
+func TestUploadSavesTheURIBasedOnImageStorersReturn(t *testing.T) {
+	serviceObject := imageservice.ImageService{
+		DataStore: make([]proto.ImageList, 0, 0),
+		FileStore: &MockImageStore{I: 1},
+	}
+
+	var testData = []StoreImageTestData{
+		{
+			input: &proto.ImageData{
+				Name:    "Choco A",
+				Caption: "caption",
+				Image:   testImage(png.Encode),
+			},
+			expected: &proto.StatusResponse{
+				Message: "Image Saved!",
+				Success: true,
+			},
+		},
+	}
+
+	for _, testValue := range testData {
+		var resp = &proto.StatusResponse{}
+		if err := serviceObject.StoreImage(context.TODO(), testValue.input, resp); err != nil {
+			t.Fatalf(err.Error())
+		}
+		if !reflect.DeepEqual(testValue.expected, resp) {
+			t.Errorf("For input '%v': expected '%v', got '%v'", testValue.input, testValue.expected, resp)
+		}
+	}
+
+	input := &proto.ItemName{
+		Name: "Choco A",
+	}
+	expected := &proto.ImageList{
+		Name:  "Choco A",
+		Cover: 0,
+		Images: []*proto.Image{
+			{
+				Uri:     "/1.jpeg",
+				Caption: "caption",
+			},
+		},
+	}
+
+	var resp *proto.ImageList = &proto.ImageList{}
+	if err := serviceObject.ImagesFor(context.TODO(), input, resp); err != nil {
+		t.Errorf("for '%v'\nexpected error to be nil; was '%v'", input, err)
+	}
+
+	if !reflect.DeepEqual(expected, resp) {
+		t.Errorf("for '%v'\n\nexpected : '%v'\n\ngot      : '%v'", input, expected, resp)
+	}
 }
