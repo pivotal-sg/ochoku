@@ -15,6 +15,12 @@ and beautifully photographed chocolate collection.
 
 # Setting up...
 
+We are using glide for managing dependencies; read their install docs.
+
+https://github.com/Masterminds/glide
+
+Once glide is installed. run `glide install` in the project root.
+
 You'll need a server...
 
 - Consul for service discovery
