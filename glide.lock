@@ -1,0 +1,91 @@
+hash: b48b782bae209bd3331bc69288743445d1b257cf9a1c692e4a8d25f14af7cd78
+updated: 2016-07-08T10:42:11.563413936+08:00
+imports:
+- name: github.com/bitly/go-simplejson
+  version: aabad6e819789e569bd6aabf444c935aa9ba1e44
+- name: github.com/boltdb/bolt
+  version: acc803f0ced151102ed51bf824f8709ebd6602bc
+- name: github.com/eclipse/paho.mqtt.golang
+  version: 44eec149d4433449add74781ffc86cc60d3f1598
+  subpackages:
+  - packets
+- name: github.com/golang/protobuf
+  version: 3852dcfda249c2097355a6aabb199a28d97b30df
+  subpackages:
+  - proto
+- name: github.com/hashicorp/consul
+  version: 64e3033d3c7f80af3f925f4665a9bc1af75d6153
+  subpackages:
+  - api
+  - watch
+- name: github.com/hashicorp/go-cleanhttp
+  version: 875fb671b3ddc66f8e2f0acc33829c8cb989a38d
+- name: github.com/hashicorp/serf
+  version: 6c4672d66fc6312ddde18399262943e21175d831
+  subpackages:
+  - coordinate
+  - serf
+- name: github.com/imdario/mergo
+  version: 50d4dbd4eb0e84778abe37cefef140271d96fade
+- name: github.com/micro/cli
+  version: 3d2263bb092286dde294a31049c92665f8373820
+- name: github.com/micro/config-srv
+  version: 9af26d18176debfb5e692be708ee62f57d946ed5
+  subpackages:
+  - proto/config
+- name: github.com/micro/go-micro
+  version: 32f9546ed5ae9f7d654b8f2dde8251f58b6d917f
+  subpackages:
+  - client
+  - server
+  - broker
+  - codec
+  - codec/jsonrpc
+  - codec/protorpc
+  - errors
+  - metadata
+  - registry
+  - selector
+  - transport
+  - server/debug
+  - cmd
+  - server/debug/proto
+  - broker/http
+  - broker/mqtt
+  - registry/consul
+  - registry/mdns
+  - selector/cache
+  - transport/http
+- name: github.com/micro/go-platform
+  version: b025950965914f8156e47535005b0280ba73a4e1
+  subpackages:
+  - config
+  - config/proto
+- name: github.com/micro/mdns
+  version: ab413e42fed3fdd8198ac4df3db5a342eb67d6e4
+- name: github.com/micro/misc
+  version: 677e2a0beb40a3dd7418548fe0cdc661e2922859
+  subpackages:
+  - lib/tls
+- name: github.com/miekg/dns
+  version: 75e6e86cc601825c5dbcd4e0c209eab180997cd7
+- name: github.com/mitchellh/hashstructure
+  version: b098c52ef6beab8cd82bc4a32422cf54b890e8fa
+- name: github.com/pborman/uuid
+  version: c55201b036063326c5b1b89ccfe45a184973d073
+- name: github.com/satori/go.uuid
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+- name: golang.org/x/net
+  version: f841c39de738b1d0df95b5a7187744f0e03d8112
+  subpackages:
+  - context
+  - websocket
+  - ipv4
+  - ipv6
+  - bpf
+  - internal/iana
+- name: golang.org/x/sys
+  version: a408501be4d17ee978c04a618e7a1b22af058c0e
+  subpackages:
+  - unix
+testImports: []
