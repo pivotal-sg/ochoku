@@ -2,24 +2,17 @@ package imageservice
 
 import (
 	"image"
-	"image/jpeg"
-	"io"
 	"os"
 	"path/filepath"
 
+	"github.com/micro/go-platform/config"
 	"github.com/satori/go.uuid"
 )
 
 type LocalFileStore struct {
 	// Path is the directory in which to store the image.
-	Path string
-}
-
-func encodeToJpeg(img image.Image, w io.Writer) error {
-	if err := jpeg.Encode(w, img, nil); err != nil {
-		return err
-	}
-	return nil
+	Path   string
+	Config config.Config
 }
 
 // SaveImage persists the image to the implemented storage backend,
