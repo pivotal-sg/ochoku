@@ -1,6 +1,10 @@
-hash: b48b782bae209bd3331bc69288743445d1b257cf9a1c692e4a8d25f14af7cd78
-updated: 2016-07-08T10:42:11.563413936+08:00
+hash: 6fb11621065bbd2f1f01ac6bca7b01dcb70cb45b27eba2d06a60b1f3771ce422
+updated: 2016-07-08T11:10:45.866794507+08:00
 imports:
+- name: github.com/aws/aws-sdk-go
+  version: 90dec2183a5f5458ee79cbaf4b8e9ab910bc81a6
+  subpackages:
+  - aws
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/boltdb/bolt
