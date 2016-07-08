@@ -31,16 +31,12 @@ func generateS3URI(filename, region, bucket string) string {
 	return uri.String()
 }
 
-// SaveImage to a S3 bucket, as jpeg with default compression.  This
-// will return the URI of said image.
-func (s3store S3Store) SaveImage(img image.Image) (string, error) {
-	var aws_id, aws_secret, aws_token, aws_region, s3_bucket string
-
+// getS3Session returns the s3 connection for the supplied details
+func (s3store S3Store) getS3Session(aws_region string) *s3.S3 {
+	var aws_id, aws_secret, aws_token string
 	aws_id = s3store.Config.Get("aws", "id").String("")
 	aws_secret = s3store.Config.Get("aws", "secret").String("")
 	aws_token = s3store.Config.Get("aws", "token").String("")
-	aws_region = s3store.Config.Get("aws", "region").String("ap-southeast-1")
-	s3_bucket = s3store.Config.Get("aws", "bucket").String("ochoku")
 
 	// id, secret, token
 	creds := credentials.NewStaticCredentials(aws_id, aws_secret, aws_token)
@@ -48,7 +44,18 @@ func (s3store S3Store) SaveImage(img image.Image) (string, error) {
 	conf := &aws.Config{Region: aws.String(aws_region)}
 	conf = conf.WithCredentials(creds)
 
-	svc := s3.New(session.New(conf))
+	return s3.New(session.New(conf))
+}
+
+// SaveImage to a S3 bucket, as jpeg with default compression.  This
+// will return the URI of said image.
+func (s3store S3Store) SaveImage(img image.Image) (string, error) {
+	var aws_region, s3_bucket string
+
+	aws_region = s3store.Config.Get("aws", "region").String("ap-southeast-1")
+	s3_bucket = s3store.Config.Get("aws", "bucket").String("ochoku")
+
+	svc := s3store.getS3Session(aws_region)
 
 	// create file like for writing to s3
 	imgBuf := &bytes.Buffer{}
