@@ -17,10 +17,10 @@ import (
 )
 
 type ImageService struct {
-	config config.Config
+	Config config.Config
 
 	DataStore []proto.ImageList
-	FileStore ImageStore
+	FileStore ImageStore // TODO change this name.  it sucks
 }
 
 var imageDataValidations validation.Validations
