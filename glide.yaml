@@ -19,3 +19,5 @@ import:
   version: ~1.2.4
   subpackages:
   - aws
+- package: gopkg.in/fsnotify.v1
+  version: ~1.3.1
