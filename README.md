@@ -16,7 +16,7 @@ focusing on your favorite chocolates!
 
 Curate your treasure trove of chocolate knowledge, and make your
 (twitter) friends green with salivating envy over your eurdite
-and beautifully photographed chocolate collection.
+and beautifully photographed chocolate collection..
 
 # Setting up...
 
