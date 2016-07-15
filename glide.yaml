@@ -11,6 +11,7 @@ import:
 - package: github.com/micro/go-platform
   subpackages:
   - config
+  - auth
 - package: github.com/satori/go.uuid
 - package: golang.org/x/net
   subpackages:
@@ -21,3 +22,11 @@ import:
   - aws
 - package: gopkg.in/fsnotify.v1
   version: ~1.3.1
+- package: github.com/micro/auth-srv
+  subpackages:
+  - '...'
+- package: github.com/armon/go-radix
+- package: github.com/mitchellh/cli
+- package: github.com/bgentry/speakeasy
+- package: github.com/mattn/go-isatty
+  version: ^0.0.1

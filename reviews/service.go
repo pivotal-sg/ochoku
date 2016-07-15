@@ -4,16 +4,19 @@ import (
 	"log"
 
 	"github.com/micro/go-micro"
+	"github.com/micro/go-platform/auth"
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
 	"github.com/pivotal-sg/ochoku/reviews/storage"
 )
 
-var ServiceName = "pivotal.io.ochoku.reviews"
-var Version = "0.1.0"
+const ServerName = "pivotal.io.ochoku"
+const ServiceName = "reviews"
+const Version = "0.1.0"
 
 // NewService returns a ReviewService with server
-func NewService(storageFile string) micro.Service {
+func NewService(storageFile string, a auth.Auth) micro.Service {
 	service := micro.NewService(
+		micro.WrapHandler(auth.HandlerWrapper(a)),
 		micro.Name(ServiceName),
 		micro.Version(Version),
 	)
