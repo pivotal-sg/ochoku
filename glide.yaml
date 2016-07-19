@@ -19,3 +19,4 @@ import:
   version: ~1.2.4
   subpackages:
   - aws
+- package: github.com/micro/go-plugins

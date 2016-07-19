@@ -1,8 +1,10 @@
 package reviews
 
 import (
+	"fmt"
 	"log"
 
+	"github.com/micro/cli"
 	"github.com/micro/go-micro"
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
 	"github.com/pivotal-sg/ochoku/reviews/storage"
@@ -16,9 +18,17 @@ func NewService(storageFile string) micro.Service {
 	service := micro.NewService(
 		micro.Name(ServiceName),
 		micro.Version(Version),
+		micro.Flags(
+			cli.StringFlag{
+				Name:        "config",
+				EnvVar:      "MICRO_REVIEWS_CONFIG_FILE",
+				Usage:       "Path to the file backed configuration for the reviews service",
+				Value:       DefaultConfigFileName,
+				Destination: &configFileName,
+			}),
 	)
 
-	service.Init()
+	service.Init(micro.Action(func(c *cli.Context) { fmt.Println(c.String("config")) }))
 
 	storage, err := storage.New(storageFile)
 

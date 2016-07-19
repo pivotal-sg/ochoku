@@ -1,10 +1,32 @@
-hash: 6fb11621065bbd2f1f01ac6bca7b01dcb70cb45b27eba2d06a60b1f3771ce422
-updated: 2016-07-08T11:10:45.866794507+08:00
+hash: 7279903a693819b415cec3a2413e9451e04496817828c5d990aa8ba1d60fc433
+updated: 2016-07-18T11:55:27.828602655+08:00
 imports:
 - name: github.com/aws/aws-sdk-go
-  version: 90dec2183a5f5458ee79cbaf4b8e9ab910bc81a6
+  version: 3c37d29820480639ff03fd66df00a0f27984f88d
   subpackages:
   - aws
+  - aws/credentials
+  - aws/session
+  - service/s3
+  - aws/awserr
+  - aws/client
+  - aws/corehandlers
+  - aws/defaults
+  - aws/request
+  - private/endpoints
+  - aws/awsutil
+  - aws/client/metadata
+  - aws/signer/v4
+  - private/protocol
+  - private/protocol/restxml
+  - private/waiter
+  - aws/credentials/ec2rolecreds
+  - aws/credentials/endpointcreds
+  - aws/ec2metadata
+  - private/protocol/rest
+  - private/protocol/query
+  - private/protocol/xml/xmlutil
+  - private/protocol/query/queryutil
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/boltdb/bolt
@@ -13,12 +35,14 @@ imports:
   version: 44eec149d4433449add74781ffc86cc60d3f1598
   subpackages:
   - packets
+- name: github.com/go-ini/ini
+  version: cf53f9204df4fbdd7ec4164b57fa6184ba168292
 - name: github.com/golang/protobuf
-  version: 3852dcfda249c2097355a6aabb199a28d97b30df
+  version: 874264fbbb43f4d91e999fecb4b40143ed611400
   subpackages:
   - proto
 - name: github.com/hashicorp/consul
-  version: 64e3033d3c7f80af3f925f4665a9bc1af75d6153
+  version: 548fb6eb3f407147e20d923521296e0500f57ef0
   subpackages:
   - api
   - watch
@@ -31,6 +55,8 @@ imports:
   - serf
 - name: github.com/imdario/mergo
   version: 50d4dbd4eb0e84778abe37cefef140271d96fade
+- name: github.com/jmespath/go-jmespath
+  version: 0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74
 - name: github.com/micro/cli
   version: 3d2263bb092286dde294a31049c92665f8373820
 - name: github.com/micro/config-srv
@@ -43,28 +69,31 @@ imports:
   - client
   - server
   - broker
-  - codec
-  - codec/jsonrpc
-  - codec/protorpc
-  - errors
+  - cmd
   - metadata
   - registry
   - selector
   - transport
+  - codec
+  - codec/jsonrpc
+  - codec/protorpc
+  - errors
   - server/debug
-  - cmd
-  - server/debug/proto
   - broker/http
   - broker/mqtt
   - registry/consul
   - registry/mdns
   - selector/cache
   - transport/http
+  - server/debug/proto
 - name: github.com/micro/go-platform
-  version: b025950965914f8156e47535005b0280ba73a4e1
+  version: 8aae0051845c2c65df7be017d4be567c864fa6a0
   subpackages:
   - config
+  - config/source/file
   - config/proto
+- name: github.com/micro/go-plugins
+  version: 789c7fdaf492b7f5d3b64532e9ea375e45189198
 - name: github.com/micro/mdns
   version: ab413e42fed3fdd8198ac4df3db5a342eb67d6e4
 - name: github.com/micro/misc
@@ -78,9 +107,9 @@ imports:
 - name: github.com/pborman/uuid
   version: c55201b036063326c5b1b89ccfe45a184973d073
 - name: github.com/satori/go.uuid
-  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+  version: 0aa62d5ddceb50dbcb909d790b5345affd3669b6
 - name: golang.org/x/net
-  version: f841c39de738b1d0df95b5a7187744f0e03d8112
+  version: 3797cd8864994d713d909eda5e61ede8683fdc12
   subpackages:
   - context
   - websocket
@@ -89,7 +118,9 @@ imports:
   - bpf
   - internal/iana
 - name: golang.org/x/sys
-  version: a408501be4d17ee978c04a618e7a1b22af058c0e
+  version: a646d33e2ee3172a661fc09bca23bb4889a41bc8
   subpackages:
   - unix
+- name: gopkg.in/fsnotify.v1
+  version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
 testImports: []

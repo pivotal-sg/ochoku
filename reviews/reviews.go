@@ -62,7 +62,7 @@ func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRe
 	}
 
 	if rs.Store == nil {
-		return errors.New("Storer not set in context or wrong type")
+		return errors.New("Storer not set in ReviewService or wrong type")
 	}
 
 	errors := reviewValidations.Validate(*reviewRequest)
@@ -93,7 +93,7 @@ func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRe
 // AllReviews will return all of the reviews so far
 func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty, response *proto.ReviewList) error {
 	if rs.Store == nil {
-		return errors.New("Storer not set in context or wrong type")
+		return errors.New("Storer not set in ReviewService or wrong type")
 	}
 	allReviews, _ := rs.Store.List()
 	*response = proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
