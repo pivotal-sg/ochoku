@@ -1,6 +1,8 @@
-hash: 7279903a693819b415cec3a2413e9451e04496817828c5d990aa8ba1d60fc433
-updated: 2016-07-18T11:55:27.828602655+08:00
+hash: 17a5cc3fdd01ebc35740f42a9959cce16093fa8b3c9b01c83d3e151d7ed5d701
+updated: 2016-07-19T10:18:59.045153391+08:00
 imports:
+- name: github.com/armon/go-radix
+  version: 4239b77079c7b5d1243b7b4736304ce8ddb6f0f2
 - name: github.com/aws/aws-sdk-go
   version: 3c37d29820480639ff03fd66df00a0f27984f88d
   subpackages:
@@ -27,6 +29,8 @@ imports:
   - private/protocol/query
   - private/protocol/xml/xmlutil
   - private/protocol/query/queryutil
+- name: github.com/bgentry/speakeasy
+  version: e1439544d8ecd0f3e9373a636d447668096a8f81
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/boltdb/bolt
@@ -57,6 +61,13 @@ imports:
   version: 50d4dbd4eb0e84778abe37cefef140271d96fade
 - name: github.com/jmespath/go-jmespath
   version: 0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74
+- name: github.com/mattn/go-isatty
+  version: 3a115632dcd687f9c8cd01679c83a06a0e21c1f3
+- name: github.com/micro/auth-srv
+  version: 41b679a4c0ab6c6761ea86883f8fa75f76456422
+  subpackages:
+  - '...'
+  - proto/oauth2
 - name: github.com/micro/cli
   version: 3d2263bb092286dde294a31049c92665f8373820
 - name: github.com/micro/config-srv
@@ -68,9 +79,9 @@ imports:
   subpackages:
   - client
   - server
+  - metadata
   - broker
   - cmd
-  - metadata
   - registry
   - selector
   - transport
@@ -90,6 +101,7 @@ imports:
   version: 8aae0051845c2c65df7be017d4be567c864fa6a0
   subpackages:
   - config
+  - auth
   - config/source/file
   - config/proto
 - name: github.com/micro/go-plugins
@@ -102,6 +114,8 @@ imports:
   - lib/tls
 - name: github.com/miekg/dns
   version: 75e6e86cc601825c5dbcd4e0c209eab180997cd7
+- name: github.com/mitchellh/cli
+  version: 168daae10d6ff81b8b1201b0a4c9607d7e9b82e3
 - name: github.com/mitchellh/hashstructure
   version: b098c52ef6beab8cd82bc4a32422cf54b890e8fa
 - name: github.com/pborman/uuid

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	service := reviews.NewService("reviews.db")
+	service := reviews.NewService("reviews.db", nil)
 	if err := service.Run(); err != nil {
 		log.Fatalf("Error on running Reviews service: '%v'", err)
 	}
