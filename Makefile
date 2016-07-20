@@ -14,10 +14,16 @@ NOVENDOR = $(shell glide novendor)
 SUBDIRS = reviews imageservice
 
 .PHONY: all $(SUBDIRS)
+all: reviews imageservice
+	
 
-all: $(SUBDIRS)
-	echo $(SUBDIRS)
-	$(MAKE) -e -C $(SUBDIRS) all
+.PHONY: imageservice
+imageservice:
+	make -e -C imageservice
+
+.PHONY: reviews
+reviews:
+	make -e -C reviews
 
 .PHONY: test
 test:

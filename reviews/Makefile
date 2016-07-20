@@ -1,9 +1,9 @@
-_BINDIR = $(BINDIR)
+BINDIR = .
 
 all: reviews-svc reviews-client
 
 reviews-svc:
-	go build -o $(_BINDIR)/reviews-svc cli/service/reviews.go
+	go build -o $(BINDIR)/reviews-svc cli/service/reviews.go
 
 reviews-client:
-	go build -o $(_BINDIR)/reviews-client cli/client/client.go
+	go build -o $(BINDIR)/reviews-client cli/client/client.go
