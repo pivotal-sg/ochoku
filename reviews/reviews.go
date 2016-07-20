@@ -3,6 +3,7 @@ package reviews
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	proto "github.com/pivotal-sg/ochoku/reviews/proto"
 	"github.com/pivotal-sg/ochoku/reviews/storage"
@@ -92,11 +93,18 @@ func (rs *ReviewService) Review(c context.Context, reviewRequest *proto.ReviewRe
 
 // AllReviews will return all of the reviews so far
 func (rs *ReviewService) AllReviews(context context.Context, empty *proto.Empty, response *proto.ReviewList) error {
+	fmt.Println("Hi!")
 	if rs.Store == nil {
+		fmt.Println("NoStores!")
 		return errors.New("Storer not set in ReviewService or wrong type")
 	}
+	if response == nil {
+		fmt.Println("NilResponse!")
+	}
 	allReviews, _ := rs.Store.List()
+	fmt.Println("lists are:", allReviews)
 	*response = proto.ReviewList{Reviews: allReviews, Count: int32(len(allReviews))}
+	fmt.Println("Response is!", *response)
 
 	return nil
 }
