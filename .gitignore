@@ -76,4 +76,7 @@ vendor/
 reviews.db
 reviews/cli/service/service
 reviews/reviews.db
-reviews/reviews_test.db
+reviews/*.db
+
+bin/
+
