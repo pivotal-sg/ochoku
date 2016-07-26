@@ -1,10 +1,10 @@
 hash: 17a5cc3fdd01ebc35740f42a9959cce16093fa8b3c9b01c83d3e151d7ed5d701
-updated: 2016-07-19T10:18:59.045153391+08:00
+updated: 2016-07-25T11:56:36.985088968+08:00
 imports:
 - name: github.com/armon/go-radix
   version: 4239b77079c7b5d1243b7b4736304ce8ddb6f0f2
 - name: github.com/aws/aws-sdk-go
-  version: 3c37d29820480639ff03fd66df00a0f27984f88d
+  version: 565027b24171359f23f883d0fc48c228cdde301d
   subpackages:
   - aws
   - aws/credentials
@@ -34,7 +34,7 @@ imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/boltdb/bolt
-  version: acc803f0ced151102ed51bf824f8709ebd6602bc
+  version: 5cc10bbbc5c141029940133bb33c9e969512a698
 - name: github.com/eclipse/paho.mqtt.golang
   version: 44eec149d4433449add74781ffc86cc60d3f1598
   subpackages:
@@ -46,7 +46,7 @@ imports:
   subpackages:
   - proto
 - name: github.com/hashicorp/consul
-  version: 548fb6eb3f407147e20d923521296e0500f57ef0
+  version: 2de8a3f7fbf642b9610498013add383bc98996e6
   subpackages:
   - api
   - watch
@@ -79,9 +79,9 @@ imports:
   subpackages:
   - client
   - server
+  - cmd
   - metadata
   - broker
-  - cmd
   - registry
   - selector
   - transport
@@ -98,7 +98,7 @@ imports:
   - transport/http
   - server/debug/proto
 - name: github.com/micro/go-platform
-  version: 8aae0051845c2c65df7be017d4be567c864fa6a0
+  version: 1e631bb6815c2dbabe589649b8d89b5a460c41f5
   subpackages:
   - config
   - auth
@@ -123,7 +123,7 @@ imports:
 - name: github.com/satori/go.uuid
   version: 0aa62d5ddceb50dbcb909d790b5345affd3669b6
 - name: golang.org/x/net
-  version: 3797cd8864994d713d909eda5e61ede8683fdc12
+  version: 4d38db76854b199960801a1734443fd02870d7e1
   subpackages:
   - context
   - websocket

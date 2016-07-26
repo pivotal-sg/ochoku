@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+service User {
+    rpc Register(RegistrationData) returns (UserDetails) {}
+    rpc PasswordLogin(LoginDetails) returns (LoginStatus) {}
+}
+
+message RegistrationData {
+    string username = 1;
+    string password = 2;
+    string name = 3;
+}
+
+message LoginDetails {
+    string username = 4;
+    string password = 5;
+}
+
+message UserDetails {
+    string username = 6;
+    string name = 7;
+    int64 joined = 8;  // unix timestamp
+}
+
+message LoginStatus {
+    bool ok = 9;
+    string msg = 10;  // arbitrary message
+}
