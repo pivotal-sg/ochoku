@@ -1,6 +1,7 @@
 package userservice_test
 
 import (
+	"errors"
 	"testing"
 	"time"
 
@@ -11,10 +12,14 @@ import (
 )
 
 type MockStore struct {
-	users map[string]proto.UserDetails
+	users      map[string]proto.UserDetails
+	throwError bool
 }
 
 func (ms *MockStore) Get(username string) (proto.UserDetails, error) {
+	if ms.throwError {
+		return proto.UserDetails{}, errors.New("I fail it")
+	}
 	return ms.users[username], nil
 }
 
@@ -23,7 +28,12 @@ func (ms *MockStore) Insert(usr proto.UserDetails) error {
 	return nil
 }
 
-var mockStore *MockStore = &MockStore{make(map[string]proto.UserDetails)}
+func (ms *MockStore) reset() {
+	ms.users = make(map[string]proto.UserDetails)
+	ms.throwError = false
+}
+
+var mockStore *MockStore = &MockStore{users: make(map[string]proto.UserDetails)}
 var userServiceObject *userservice.UserService = &userservice.UserService{
 	Store: mockStore,
 }
@@ -39,6 +49,7 @@ func createUser(ms *MockStore) {
 }
 
 func TestUserRegistrationReturnsDetails(t *testing.T) {
+	mockStore.reset()
 	var response *proto.UserDetails = &proto.UserDetails{}
 	ctx := context.TODO()
 
@@ -68,6 +79,7 @@ func TestUserRegistrationReturnsDetails(t *testing.T) {
 }
 
 func TestUserLoginWorks(t *testing.T) {
+	mockStore.reset()
 	createUser(mockStore)
 
 	var response *proto.LoginStatus = &proto.LoginStatus{}
@@ -91,5 +103,23 @@ func TestUserLoginWorks(t *testing.T) {
 	if response.Msg != "" {
 		t.Errorf("expected Msg to be blank, was '%v'", response.Msg)
 	}
+}
 
+func TestErrorInGetOnLoginReturnsError(t *testing.T) {
+	mockStore.reset()
+	mockStore.throwError = true
+
+	var response *proto.LoginStatus = &proto.LoginStatus{}
+	ctx := context.TODO()
+
+	loginRequest := proto.LoginDetails{
+		Username: "username",
+		Password: "password",
+	}
+
+	err := userServiceObject.PasswordLogin(ctx, &loginRequest, response)
+
+	if err == nil {
+		t.Errorf("expected the response to have an error, it was %v", err)
+	}
 }

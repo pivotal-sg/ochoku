@@ -28,13 +28,15 @@ func (us *UserService) Register(ctx context.Context, regData *proto.Registration
 }
 
 func (us *UserService) PasswordLogin(ctx context.Context, loginDetails *proto.LoginDetails, loginStatus *proto.LoginStatus) error {
-  user, _ := us.Store.Get(loginDetails.Username)
-  if err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(loginDetails.Password)); err != nil {
-    // bail
+  user, err := us.Store.Get(loginDetails.Username)
+  if err != nil {
+    return err
+  }
+
+  if hashErr := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(loginDetails.Password)); hashErr != nil {
     loginStatus.Ok = false
     return nil
   }
-  // continue
   loginStatus.Ok = true
   return nil
 }
