@@ -17,12 +17,13 @@ message LoginDetails {
 }
 
 message UserDetails {
-    string username = 6;
+    string hashed_password = 6;
     string name = 7;
-    int64 joined = 8;  // unix timestamp
+    string username = 8;
+    int64 joined = 9;  // unix timestamp
 }
 
 message LoginStatus {
-    bool ok = 9;
-    string msg = 10;  // arbitrary message
+    bool ok = 10;
+    string msg = 11;  // arbitrary message
 }

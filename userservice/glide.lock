@@ -1,0 +1,50 @@
+hash: 2c7e1f942fd9740fac578254a6f30735e9477a72a97a0aa3785adb84bcdad513
+updated: 2016-07-26T12:33:55.66302595+08:00
+imports:
+- name: github.com/armon/go-radix
+  version: 4239b77079c7b5d1243b7b4736304ce8ddb6f0f2
+- name: github.com/aws/aws-sdk-go
+  version: 565027b24171359f23f883d0fc48c228cdde301d
+  subpackages:
+  - aws
+- name: github.com/bgentry/speakeasy
+  version: e1439544d8ecd0f3e9373a636d447668096a8f81
+- name: github.com/boltdb/bolt
+  version: acc803f0ced151102ed51bf824f8709ebd6602bc
+- name: github.com/golang/protobuf
+  version: 874264fbbb43f4d91e999fecb4b40143ed611400
+  subpackages:
+  - proto
+- name: github.com/mattn/go-isatty
+  version: 3a115632dcd687f9c8cd01679c83a06a0e21c1f3
+- name: github.com/micro/auth-srv
+  version: 41b679a4c0ab6c6761ea86883f8fa75f76456422
+  subpackages:
+  - '...'
+- name: github.com/micro/go-micro
+  version: 32f9546ed5ae9f7d654b8f2dde8251f58b6d917f
+  subpackages:
+  - client
+  - server
+- name: github.com/micro/go-platform
+  version: 8aae0051845c2c65df7be017d4be567c864fa6a0
+  subpackages:
+  - config
+  - auth
+- name: github.com/micro/go-plugins
+  version: 789c7fdaf492b7f5d3b64532e9ea375e45189198
+- name: github.com/mitchellh/cli
+  version: 168daae10d6ff81b8b1201b0a4c9607d7e9b82e3
+- name: github.com/satori/go.uuid
+  version: 0aa62d5ddceb50dbcb909d790b5345affd3669b6
+- name: golang.org/x/crypto
+  version: bc89c496413265e715159bdc8478ee9a92fdc265
+  subpackages:
+  - bcrypt
+- name: golang.org/x/net
+  version: 3797cd8864994d713d909eda5e61ede8683fdc12
+  subpackages:
+  - context
+- name: gopkg.in/fsnotify.v1
+  version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
+testImports: []

@@ -6,12 +6,36 @@ import (
 
 	"github.com/pivotal-sg/ochoku/userservice"
 	proto "github.com/pivotal-sg/ochoku/userservice/proto"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/net/context"
 )
 
-var userServiceObject *userservice.UserService = &userservice.UserService{}
+type MockStore struct {
+	users map[string]proto.UserDetails
+}
 
-func createUser(us *userservice.UserService) {
+func (ms *MockStore) Get(username string) (proto.UserDetails, error) {
+	return ms.users[username], nil
+}
+
+func (ms *MockStore) Insert(usr proto.UserDetails) error {
+	ms.users[usr.Username] = usr
+	return nil
+}
+
+var mockStore *MockStore = &MockStore{make(map[string]proto.UserDetails)}
+var userServiceObject *userservice.UserService = &userservice.UserService{
+	Store: mockStore,
+}
+
+func createUser(ms *MockStore) {
+	hash, _ := bcrypt.GenerateFromPassword([]byte("password"), bcrypt.DefaultCost)
+
+	ms.Insert(proto.UserDetails{
+		Username:       "username",
+		HashedPassword: string(hash),
+		Joined:         12345,
+		Name:           "Joan Smith"})
 }
 
 func TestUserRegistrationReturnsDetails(t *testing.T) {
@@ -30,7 +54,7 @@ func TestUserRegistrationReturnsDetails(t *testing.T) {
 		t.Errorf("expected the response to not have an error, it was %v", err)
 	}
 
-	if response.Joined == 0 || response.Joined >= time.Now().Unix() {
+	if response.Joined == 0 || response.Joined > time.Now().Unix() {
 		t.Errorf("expected a valid Joined time, was %v", response.Joined)
 	}
 
@@ -44,7 +68,7 @@ func TestUserRegistrationReturnsDetails(t *testing.T) {
 }
 
 func TestUserLoginWorks(t *testing.T) {
-	createUser(userServiceObject)
+	createUser(mockStore)
 
 	var response *proto.LoginStatus = &proto.LoginStatus{}
 	ctx := context.TODO()
