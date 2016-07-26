@@ -31,4 +31,4 @@ test:
 
 .PHONY: clean
 clean:
-	find -type f -executable -exec sh -c "file -i '{}' | grep -q 'x-executable; charset=binary'" \; -print | xargs rm
+	rm -rf bin || 0;
