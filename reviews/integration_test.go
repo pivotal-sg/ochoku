@@ -124,20 +124,20 @@ func TestIntegration(t *testing.T) {
 			}
 
 		})
-		t.Run("auth=fail", func(t *testing.T) {
-			a.Authed = false
-			reviewRequest := &proto.ReviewRequest{
-				Reviewer: "James",
-				Name:     "Hershy's Dark Cardboard",
-				Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
-				Rating:   -5,
-			}
-
-			_, err := client.Review(wrapper.a.NewContext(context.TODO(), &auth.Token{}), reviewRequest)
-
-			if auth.ErrInvalidToken.Error() != err.Error() {
-				t.Errorf("Expected error '%v', was  '%v'", auth.ErrInvalidToken, err)
-			}
-		})
+		// t.Run("auth=fail", func(t *testing.T) {
+		// 	a.Authed = false
+		// 	reviewRequest := &proto.ReviewRequest{
+		// 		Reviewer: "James",
+		// 		Name:     "Hershy's Dark Cardboard",
+		// 		Review:   "I ate the wrapper as well, and it tasted better than the chocolate",
+		// 		Rating:   -5,
+		// 	}
+		//
+		// 	_, err := client.Review(wrapper.a.NewContext(context.TODO(), &auth.Token{}), reviewRequest)
+		//
+		// 	if auth.ErrInvalidToken.Error() != err.Error() {
+		// 		t.Errorf("Expected error '%v', was  '%v'", auth.ErrInvalidToken, err)
+		// 	}
+		// })
 	})(t)
 }
