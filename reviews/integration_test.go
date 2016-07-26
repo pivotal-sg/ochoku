@@ -10,6 +10,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/hashicorp/consul/command"
+	"github.com/micro/go-micro/cmd"
 	"github.com/micro/go-platform/auth"
 	"github.com/mitchellh/cli"
 	"github.com/pivotal-sg/ochoku/reviews"
@@ -74,7 +75,7 @@ func (i integrationWrapper) wrap(tests func(*testing.T)) func(*testing.T) {
 		time.Sleep(100 * time.Millisecond)
 
 		go func() {
-			service := reviews.NewService("reviews_test.db", i.a)
+			service := reviews.NewService(cmd.DefaultCmd)
 			service.Run()
 		}()
 
@@ -87,7 +88,7 @@ func TestIntegration(t *testing.T) {
 	a := &AuthTest{true}
 	wrapper := integrationWrapper{a: a}
 	wrapper.wrap(func(t *testing.T) {
-		client := reviews.NewClient()
+		client := reviews.NewClient(cmd.DefaultCmd)
 		t.Run("storage=file", func(t *testing.T) {
 			reviewRequest := &proto.ReviewRequest{
 				Reviewer: "James",
@@ -119,7 +120,7 @@ func TestIntegration(t *testing.T) {
 				t.Errorf("Expected error to be nil, was  '%v'", err)
 			}
 			if !reflect.DeepEqual(expected, allReviews) {
-				t.Errorf("Expected allReviews to be '%v', was  '%v'", expected, allReviews)
+				t.Errorf("Expected allReviews to be '%#v', was  '%#v'", expected, allReviews)
 			}
 
 		})

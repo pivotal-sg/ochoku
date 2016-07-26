@@ -28,17 +28,9 @@ func newCmd() cmd.Cmd {
 }
 
 func main() {
-	client, a := reviews.NewClient(newCmd())
+	client := reviews.NewClient(newCmd())
 
-	t, err := a.Token()
-	if err != nil {
-		log.Fatalf("Couldn't get token, '%v'", err)
-	}
-	ctx := a.NewContext(context.Background(), t)
-	allReviews := proto.ReviewList{}
-	req := client.NewRequest("reviews", "Reviewer.AllReviews", &allReviews)
-	err = client.Call(ctx, req, allReviews)
-
+	allReviews, err := client.AllReviews(context.TODO(), &proto.Empty{})
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
